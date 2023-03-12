@@ -13,7 +13,6 @@ import jakarta.ws.rs.core.Response;
 
 @Path("/spam")
 public class SpamResource {
-
 //    your SpamDetector Class responsible for all the SpamDetecting logic
     SpamDetector detector = new SpamDetector();
 
