@@ -4,13 +4,34 @@ import com.spamdetector.domain.TestFile;
 
 import java.io.*;
 import java.util.*;
-
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * TODO: This class will be implemented by you
  * You may create more methods to help you organize you strategy and make you code more readable
  */
 public class SpamDetector {
+    public static String[] getWords(String line){
+        String[] words = line.split("\\s");
+        Pattern wordreg = Pattern.compile("(?<![A-Za-z])[A-Za-z]+(?![A-Za-z])");
+        Matcher matcher = null;
+
+        int valid = 0;
+        for(int i = 0; i < words.length; i++){
+            if((wordreg.matcher(words[i])).matches()){
+                words[valid] = words[i];
+                valid ++;
+            }
+        }
+
+        String[] temp = new String[valid];
+        for(int i = 0; i < valid; i++){
+            temp[i] = words[i];
+        }
+
+        return temp;
+    }
 
     public static List<TestFile> trainAndTest(File mainDirectory) {
 //        TODO: main method of loading the directories and files, training and testing the model
@@ -29,6 +50,9 @@ public class SpamDetector {
         File[] ham2 = (new File(mainDirectory + "\\ham2\\")).listFiles();
         File[] spam = (new File(mainDirectory + "\\spam\\")).listFiles();
 
+        Map<String, Integer> trainHamFreq = new HashMap<>();
+        Map<String, Integer> trainSpamFreq = new HashMap<>();
+
         Scanner scanner = null;
         BufferedReader reader = null;
 
@@ -39,6 +63,18 @@ public class SpamDetector {
 
                 while (line != null) {
                     line = reader.readLine();
+
+                    System.out.println(line);
+
+                    String[] words = getWords(line);
+
+                    for(String word : words){
+                        if(trainHamFreq.containsKey(word)){
+                            trainHamFreq.put(word,trainHamFreq.get(word) + 1);
+                        }else{
+                            trainHamFreq.put(word,1);
+                        }
+                    }
                     /*
                     * TODO:
                     *  - split each line into words, checking if each word is valid (using regex)
