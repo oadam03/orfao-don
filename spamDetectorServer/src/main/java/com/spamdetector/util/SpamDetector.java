@@ -175,12 +175,5 @@ public class SpamDetector {
 
         return testfiles;
     }
-
-    public static void main(String[] args){
-        File maindirectory = new File("D:\\SoftwareDev\\assignment1\\spamDetectorServer\\src\\main\\resources\\data");
-        List<TestFile> data = trainAndTest(maindirectory);
-        JSONArray json = new JSONArray(data);
-        System.out.println(json);
-    }
 }
 

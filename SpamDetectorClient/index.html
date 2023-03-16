@@ -23,17 +23,45 @@
 </head>
 
 <body>
-
   <!-- Add your site or application content here -->
   <main>
     <div id="banner">
       <h1>Spam Detector Dashboard</h1>
     </div>
-    <div id="body">
+      <div class="sidebar">
+        <a class="active" href="index.html">Dashboard</a>
+        <a href="about.html">About</a>
+      </div>
+      <div class="content">
+        <div class="title">
+          <h1>Spam Analysis</h1>
+        </div>
+        <div class="info">
+          <div class="left">
+            <table id="chart">
+              <tr>
+                <th class="filenameheader">File</th>
+                <th class="spamprobheader">Spam Probability (%)</th>
+                <th class="classheader">Class</th>
+              </tr>
+              <tr>
+              </tr>
+            </table>
+          </div>
+          <div class="right">
+            <div id="performance">
+              <h3>Performance of the model</h3>
+              Accuracy
+              <div id="accuracy"></div><br>
+              Precision
+              <div id="precision"></div><br>
+            </div>
+          </div>
+        </div>
 
-    </div>
+      </div>
     <div id="footer">
-
+      Copyright ℗ Orfao Don 2023
     </div>
   </main>
 

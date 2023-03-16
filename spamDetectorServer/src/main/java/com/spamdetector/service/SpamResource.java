@@ -23,6 +23,7 @@ public class SpamResource {
 
     SpamResource() throws IOException, URISyntaxException {
         System.out.print("Training and testing the model, please wait");
+        File file = new File(System.getProperty("user.dir"));
         File maindirectory = new File("D:\\SoftwareDev\\assignment1\\spamDetectorServer\\src\\main\\resources\\data");
         this.data = this.trainAndTest(maindirectory);
     }
@@ -32,8 +33,9 @@ public class SpamResource {
     public Response getSpamResults() {
         JSONArray json = new JSONArray(data);
         Response resp = Response.status(200)
+                .header("Access-Control-Allow-Origin", "*")
                 .header("Content-Type","application/json")
-                .entity(json)
+                .entity(json.toString())
                 .build();
         return resp;
     }
@@ -59,6 +61,7 @@ public class SpamResource {
         double accuracy = (truepos + trueneg) / data.size();
 
         Response resp = Response.status(200)
+                .header("Access-Control-Allow-Origin", "*")
                 .header("Content-Type","application/json")
                 .entity(accuracy)
                 .build();
@@ -72,15 +75,19 @@ public class SpamResource {
        //      TODO: return the precision of the detector, return in a Response object
         // number of true positives / (number of false positives + number of true positives)
         double truepos = 0;
+        double falsepos = 0;
         for(TestFile file : data){
-            if(file.getSpamProbability() < 0.5 && file.getActualClass() == "ham"){
+            if(file.getSpamProbability() > 0.5 && file.getActualClass() == "spam"){
                 truepos += 1.0;
+            } else if(file.getSpamProbability() > 0.5 && file.getActualClass() == "ham"){
+                falsepos += 1.0;
             }
         }
 
-        double precision = truepos / data.size();
+        double precision = truepos / (truepos + falsepos);
 
         Response resp = Response.status(200)
+                .header("Access-Control-Allow-Origin", "*")
                 .header("Content-Type","application/json")
                 .entity(precision)
                 .build();
@@ -93,7 +100,8 @@ public class SpamResource {
         }
 
 //        TODO: load the main directory "data" here from the Resources folder
-        File mainDirectory = null;
+        File file = new File(System.getProperty("user.dir"));
+        File mainDirectory = new File("D:\\SoftwareDev\\assignment1\\spamDetectorServer\\src\\main\\resources\\data");
         return this.detector.trainAndTest(mainDirectory);
     }
 }
